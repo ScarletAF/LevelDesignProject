@@ -8,12 +8,16 @@ public class PlayerState : MonoBehaviour
 
     private void Start()
     {
-        keyList = new List<int> { 1 };
+        keyList = new List<int>();
     }
-
 
     public bool HasKey(int keyID)
     {
         return keyList.Contains(keyID);
+    }
+
+    public void AddKey(int keyID)
+    {
+        keyList.Add(keyID);
     }
 }
