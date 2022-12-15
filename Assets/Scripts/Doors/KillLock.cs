@@ -5,9 +5,18 @@ using UnityEngine;
 public class KillLock : MonoBehaviour
 {
     [SerializeField] private Door door;
-    [SerializeField] private List<GameObject> enemies;
+    [SerializeField] private List<EnemyController> enemies;
 
-    public void ReportDeath(GameObject enemy)
+    public void ReportSpawn(EnemyController enemy)
+    {
+        enemies.Add(enemy);
+        if (enemies.Count == 1)
+        {
+            door.Close();
+        }
+    }
+
+    public void ReportDeath(EnemyController enemy)
     {
         enemies.Remove(enemy);
         if (enemies.Count == 0)
