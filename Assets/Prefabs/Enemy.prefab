@@ -130,7 +130,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 1
-  jumpDistance: 0.5
+  jumpSpeed: 0
+  jumpDistance: 0
   jumpHeight: 0
 --- !u!114 &5456193342024664232
 MonoBehaviour:

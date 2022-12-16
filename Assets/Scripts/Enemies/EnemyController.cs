@@ -7,16 +7,22 @@ public class EnemyController : MonoBehaviour
 
     enum State  {idle, charge, jump}
 
-    private float originY;
-    private Rigidbody rb;
-
     private State aiState = State.charge;
     [SerializeField]
     private float moveSpeed;
     [SerializeField]
+    private float jumpSpeed;
+    [SerializeField]
     private float jumpDistance;
     [SerializeField]
     private float jumpHeight;
+
+    private float originY;
+    private Rigidbody rb;
+    private bool jumping;
+
+    private float accDistance;
+    private float accHeight;
 
     private void Start()
     {
@@ -26,14 +32,15 @@ public class EnemyController : MonoBehaviour
 
     private void Update()
     {
-        Vector3 playerPos = GameManager.PredictPlayerMovement();
+        Vector3 playerPos = GameManager.GetPlayerTransform().position;
+        Vector3 predictedPos = GameManager.PredictPlayerMovement();
 
         switch (aiState)
         {
             case State.idle:
                 break;
             case State.charge:
-                rb.MovePosition(transform.position + Time.deltaTime * moveSpeed * (playerPos - transform.position));
+                rb.MovePosition(rb.position + Time.deltaTime * moveSpeed * (playerPos - transform.position));
 
                 if (Vector3.Distance(playerPos, transform.position) < jumpDistance)
                 {
@@ -41,6 +48,13 @@ public class EnemyController : MonoBehaviour
                 }
                 break;
             case State.jump:
+                if (!jumping)
+                {
+                    jumping = true;
+                    accDistance = 0;
+                    accHeight = 0;
+                    StartCoroutine(DoJump());
+                }
                 break;
         }
     }
@@ -48,5 +62,20 @@ public class EnemyController : MonoBehaviour
     public void Die()
     {
         EnemyManager.ReportDeath(this);
+    }
+
+    private IEnumerator DoJump()
+    {
+        while (accHeight < jumpHeight)
+        {
+            rb.MovePosition(transform.position + Time.deltaTime * jumpSpeed * (transform.up + transform.forward));
+            yield return null;
+        }
+        while(accDistance < jumpDistance)
+        {
+
+            yield return null;
+        }
+        jumping = false;
     }
 }
