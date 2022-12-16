@@ -19,7 +19,7 @@ public class RocksFalling : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            //kill player
+            other.GetComponent<PlayerState>().Respawn();
         }
         else if (other.CompareTag("Enemy"))
         {

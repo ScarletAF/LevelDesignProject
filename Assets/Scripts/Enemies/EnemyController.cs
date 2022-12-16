@@ -11,51 +11,65 @@ public class EnemyController : MonoBehaviour
     [SerializeField]
     private float moveSpeed;
     [SerializeField]
-    private float jumpSpeed;
-    [SerializeField]
     private float jumpDistance;
-    [SerializeField]
-    private float jumpHeight;
 
-    private float originY;
-    private Rigidbody rb;
+    [Header("Jumping")]
+    [SerializeField] private float jumpHeight;
+    [SerializeField] private float jumpDuration;
+    [SerializeField] private float fallDuration;
+    [SerializeField] private float jumpCooldown;
+    [SerializeField] private AnimationCurve jumpCurve;
+    [SerializeField] private AnimationCurve fallCurve;
+
+    private float jumpTime;
     private bool jumping;
-
-    private float accDistance;
-    private float accHeight;
+    private bool falling;
+    private bool waiting;
+    private Rigidbody rb;
+    private float groundPositionY;
+    private Vector3 lastDirection;
 
     private void Start()
     {
-        originY = transform.position.y;
         rb = GetComponent<Rigidbody>();
+        waiting = false;
+        groundPositionY = transform.position.y;
     }
 
     private void FixedUpdate()
     {
+        Vector3 direction;
         Vector3 playerPos = GameManager.GetPlayerTransform().position;
         Vector3 predictedPos = GameManager.PredictPlayerMovement();
 
         switch (aiState)
         {
             case State.idle:
+                if (!waiting)
+                {
+                    StartCoroutine(ChargeAfterDelay(jumpCooldown));
+                }
                 break;
             case State.charge:
-                Vector3 direction = (playerPos - rb.position);
+                direction = (playerPos - rb.position);
                 rb.MovePosition(rb.position + Time.fixedDeltaTime * moveSpeed * direction.normalized);
 
                 if (Vector3.Distance(playerPos, transform.position) < jumpDistance)
                 {
                     aiState = State.jump;
+                    SetJumping();
+
+                    lastDirection = (predictedPos - rb.position);
                 }
+
                 break;
             case State.jump:
-                if (!jumping)
-                {
-                    jumping = true;
-                    accDistance = 0;
-                    accHeight = 0;
-                    StartCoroutine(DoJump());
-                }
+                Vector3 jump = CalculateJumping();
+                Vector3 movement = lastDirection.normalized;
+                Vector3 currentPosition = rb.position;
+                currentPosition.y = groundPositionY;
+
+                rb.MovePosition(rb.position + moveSpeed * Time.deltaTime * movement + jump);
                 break;
         }
     }
@@ -65,18 +79,61 @@ public class EnemyController : MonoBehaviour
         EnemyManager.ReportDeath(this);
     }
 
-    private IEnumerator DoJump()
+    private void SetJumping()
     {
-        while (accHeight < jumpHeight)
+        if (!jumping && !falling)
         {
-            rb.MovePosition(transform.position + Time.deltaTime * jumpSpeed * (transform.up + transform.forward));
-            yield return null;
+            Debug.Log("start jump");
+            jumping = true;
+            jumpTime = 0;
         }
-        while(accDistance < jumpDistance)
-        {
+    }
 
-            yield return null;
+    private Vector3 CalculateJumping()
+    {
+        Vector3 jump = new Vector3(0, 0, 0);
+        if (jumping)
+        {
+            jumpTime += Time.fixedDeltaTime;
+            jump.y = Mathf.Lerp(0f, jumpHeight, jumpTime / jumpDuration);
+
+            if (jumpTime >= jumpDuration)
+            {
+                jumping = false;
+                jumpTime = 0;
+                falling = true;
+            }
         }
-        jumping = false;
+        else if (falling)
+        {
+            jumpTime += Time.fixedDeltaTime;
+            jump.y = Mathf.Lerp(jumpHeight, 0f, jumpTime / fallDuration);
+
+            if (jumpTime >= fallDuration)
+            {
+                falling = false;
+            }
+        }
+
+        return jump;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (aiState == State.jump && collision.gameObject.CompareTag("Ground"))
+        {
+            aiState = State.idle;
+        }
+        else if (aiState == State.jump && collision.gameObject.CompareTag("Player"))
+        {
+            collision.gameObject.GetComponent<PlayerState>().Respawn();
+        }
+    }
+
+    private IEnumerator ChargeAfterDelay(float sec)
+    {
+        yield return new WaitForSeconds(sec);
+        aiState = State.charge;
+        waiting = false;
     }
 }

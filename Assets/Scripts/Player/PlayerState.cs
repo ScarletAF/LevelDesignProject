@@ -21,4 +21,9 @@ public class PlayerState : MonoBehaviour
     {
         keyList.Add(keyID);
     }
+
+    public void Respawn()
+    {
+        transform.position = GameManager.GetPlayerSpawn();
+    }
 }

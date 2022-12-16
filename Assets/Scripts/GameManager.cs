@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private GameObject player;
+    [SerializeField]
+    private Transform playerSpawn;
 
     private void Awake()
     {
@@ -36,5 +38,11 @@ public class GameManager : MonoBehaviour
     {
         var GM = GetInstance();
         return GM.player.transform.position;
+    }
+
+    public static Vector3 GetPlayerSpawn()
+    {
+        var GM = GetInstance();
+        return GM.playerSpawn.position;
     }
 }
