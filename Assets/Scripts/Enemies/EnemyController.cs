@@ -8,6 +8,7 @@ public class EnemyController : MonoBehaviour
     enum State  {idle, charge, jump}
 
     private float originY;
+    private Rigidbody rb;
 
     private State aiState = State.charge;
     [SerializeField]
@@ -20,6 +21,7 @@ public class EnemyController : MonoBehaviour
     private void Start()
     {
         originY = transform.position.y;
+        rb = GetComponent<Rigidbody>();
     }
 
     private void Update()
@@ -31,7 +33,7 @@ public class EnemyController : MonoBehaviour
             case State.idle:
                 break;
             case State.charge:
-                transform.Translate(Time.deltaTime * moveSpeed * (playerPos - transform.position));
+                rb.MovePosition(transform.position + Time.deltaTime * moveSpeed * (playerPos - transform.position));
 
                 if (Vector3.Distance(playerPos, transform.position) < jumpDistance)
                 {
