@@ -2242,7 +2242,7 @@ PrefabInstance:
     - target: {fileID: 8188780233551186214, guid: 19038bdee2d301048baf02f50561e9b7,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.1062493
+      value: 6.11
       objectReference: {fileID: 0}
     - target: {fileID: 8188780233551186214, guid: 19038bdee2d301048baf02f50561e9b7,
         type: 3}
@@ -2252,7 +2252,7 @@ PrefabInstance:
     - target: {fileID: 8188780233551186214, guid: 19038bdee2d301048baf02f50561e9b7,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 28.961937
+      value: 27.59
       objectReference: {fileID: 0}
     - target: {fileID: 8188780233551186214, guid: 19038bdee2d301048baf02f50561e9b7,
         type: 3}
@@ -4218,6 +4218,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4839288934804441896, guid: 4d1cf63b0189ef04b9aecc2fef4020bf,
+        type: 3}
+      propertyPath: keyID
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4d1cf63b0189ef04b9aecc2fef4020bf, type: 3}
@@ -6748,6 +6753,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: KeyDoor Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 8442164511950204110, guid: a35f4da33d742d74cb1e579424fc748c,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 3.64665
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a35f4da33d742d74cb1e579424fc748c, type: 3}
