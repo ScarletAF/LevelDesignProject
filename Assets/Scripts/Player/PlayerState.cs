@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerState : MonoBehaviour
 {
+    [SerializeField]
     private List<int> keyList;
 
     private void Start()
