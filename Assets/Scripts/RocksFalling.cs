@@ -23,7 +23,7 @@ public class RocksFalling : MonoBehaviour
         }
         else if (other.CompareTag("Enemy"))
         {
-            //kill enemy
+            other.GetComponent<EnemyController>().Die();
         }
     }
 }
