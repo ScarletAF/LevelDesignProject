@@ -64,7 +64,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleRotation()
     {
-        //pass
+        //if (IsMoving())
+        //{
+        //    float angle = Vector2.SignedAngle(Vector2.right, moveInput) * Mathf.Rad2Deg;
+        //    transform.rotation = Quaternion.Euler(Vector3.up * angle);
+        //}
     }
 
     private void HandleMovement()

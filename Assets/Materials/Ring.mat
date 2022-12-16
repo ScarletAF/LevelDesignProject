@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Marker 1
+  m_Name: Ring
   m_Shader: {fileID: -6465566751694194690, guid: 4af073ce580594a4db6ba675103bdf89,
     type: 3}
   m_ValidKeywords: []
@@ -112,8 +112,8 @@ Material:
     - _ZTest: 4
     - _ZWrite: 1
     - _ZWriteControl: 0
-    - _ring1: 0.2
-    - _ring2: 0.15
+    - _ring1: 0.5
+    - _ring2: 0.45
     m_Colors:
     - _BaseColor: {r: 0, g: 0, b: 0, a: 1}
     - _Color: {r: 0, g: 0, b: 0, a: 1}
