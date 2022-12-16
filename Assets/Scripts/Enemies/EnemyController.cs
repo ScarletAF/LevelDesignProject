@@ -30,7 +30,7 @@ public class EnemyController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         Vector3 playerPos = GameManager.GetPlayerTransform().position;
         Vector3 predictedPos = GameManager.PredictPlayerMovement();
@@ -40,7 +40,8 @@ public class EnemyController : MonoBehaviour
             case State.idle:
                 break;
             case State.charge:
-                rb.MovePosition(rb.position + Time.deltaTime * moveSpeed * (playerPos - transform.position));
+                Vector3 direction = (playerPos - rb.position);
+                rb.MovePosition(rb.position + Time.fixedDeltaTime * moveSpeed * direction.normalized);
 
                 if (Vector3.Distance(playerPos, transform.position) < jumpDistance)
                 {
