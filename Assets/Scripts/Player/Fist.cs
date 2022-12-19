@@ -39,9 +39,11 @@ public class Fist : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
+
         if (isPunching && other.CompareTag("Enemy"))
         {
             other.GetComponent<EnemyController>().Die();
+            Debug.Log("Pucnh hit");
         }
         else if (isPunching && other.CompareTag("Invis"))
         {

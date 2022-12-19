@@ -31,9 +31,12 @@ public class EnemyManager : MonoBehaviour
     public static void ReportDeath(EnemyController enemy)
     {
         EnemyManager EM = GetInstance();
-        foreach (KillLock door in EM.killLocks)
+        if (EM.killLocks != null)
         {
-            door.ReportDeath(enemy);
+            foreach (KillLock door in EM.killLocks)
+            {
+                door.ReportDeath(enemy);
+            }
         }
 
         Destroy(enemy.gameObject);
