@@ -37,15 +37,25 @@ public class Fist : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (isPunching && other.CompareTag("Enemy"))
+        {
+            other.GetComponent<EnemyController>().Die();
+            Debug.Log("Pucnh hit");
+        }
+        else if (isPunching && other.CompareTag("Invis"))
+        {
+            other.GetComponent<InvisibleDoor>().Appear();
+        }
+    }
+
     private void OnTriggerStay(Collider other)
     {
         if (isPunching && other.CompareTag("Enemy"))
         {
             other.GetComponent<EnemyController>().Die();
-        }
-        else if (isPunching && other.CompareTag("Invis"))
-        {
-            other.GetComponent<InvisibleDoor>().Appear();
+            Debug.Log("Pucnh hit");
         }
     }
 

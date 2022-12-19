@@ -54,7 +54,10 @@ public class EnemyController : MonoBehaviour
                 direction = (playerPos - rb.position);
                 rb.MovePosition(rb.position + Time.fixedDeltaTime * moveSpeed * direction.normalized);
 
-                if (Vector3.Distance(playerPos, transform.position) < jumpDistance)
+                RaycastHit lineOfSightHit;
+                bool hitSomething = Physics.Raycast(rb.position, direction, out lineOfSightHit);
+
+                if (Vector3.Distance(playerPos, transform.position) < jumpDistance && hitSomething && lineOfSightHit.collider.CompareTag("Player"))
                 {
                     aiState = State.jump;
                     SetJumping();
@@ -83,7 +86,6 @@ public class EnemyController : MonoBehaviour
     {
         if (!jumping && !falling)
         {
-            Debug.Log("start jump");
             jumping = true;
             jumpTime = 0;
         }
@@ -99,6 +101,8 @@ public class EnemyController : MonoBehaviour
 
             if (jumpTime >= jumpDuration)
             {
+                Debug.Log(jumpTime);
+                Debug.Log("End jump");
                 jumping = false;
                 jumpTime = 0;
                 falling = true;
@@ -111,6 +115,8 @@ public class EnemyController : MonoBehaviour
 
             if (jumpTime >= fallDuration)
             {
+                Debug.Log(jumpTime);
+                Debug.Log("End fall");
                 falling = false;
             }
         }
@@ -123,8 +129,17 @@ public class EnemyController : MonoBehaviour
         if (aiState == State.jump && collision.gameObject.CompareTag("Ground"))
         {
             aiState = State.idle;
+            falling = false;
         }
-        else if (aiState == State.jump && collision.gameObject.CompareTag("Player"))
+        else if (falling && collision.gameObject.CompareTag("Player"))
+        {
+            collision.gameObject.GetComponent<PlayerState>().Respawn();
+        }
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        if (falling && collision.gameObject.CompareTag("Player"))
         {
             collision.gameObject.GetComponent<PlayerState>().Respawn();
         }
